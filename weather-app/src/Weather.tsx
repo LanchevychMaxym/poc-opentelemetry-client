@@ -1,22 +1,37 @@
 import React from 'react';
 import { WeatherForecast } from './types';
+import {
+  Card,
+  CardContent,
+  Typography,
+  Stack,
+  Box,
+} from '@mui/material';
 
 interface WeatherProps {
   forecasts: WeatherForecast[];
 }
 
 const Weather: React.FC<WeatherProps> = ({ forecasts }) => {
-  if (!forecasts.length) return <p>No weather data available.</p>;
+  if (!forecasts.length)
+    return <Typography align="center">No weather data available.</Typography>;
 
   return (
-    <ul>
+    <Stack spacing={3}>
       {forecasts.map((f, index) => (
-        <li key={index}>
-          <strong>{new Date(f.date).toLocaleDateString()}</strong>: {f.summary} –
-          {` ${f.temperatureC}°C / ${f.temperatureF}°F`}
-        </li>
+        <Card key={index} elevation={3}>
+          <CardContent>
+            <Typography variant="h6">
+              {new Date(f.date).toLocaleDateString()}
+            </Typography>
+            <Typography color="text.secondary">{f.summary}</Typography>
+            <Typography>
+              {f.temperatureC}°C / {f.temperatureF}°F
+            </Typography>
+          </CardContent>
+        </Card>
       ))}
-    </ul>
+    </Stack>
   );
 };
 

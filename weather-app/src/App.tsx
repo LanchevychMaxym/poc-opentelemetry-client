@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './App.css';
+import { Container, Typography, Button, CircularProgress, Box } from '@mui/material';
 import Weather from './Weather';
 import { WeatherForecast } from './types';
 
@@ -23,13 +23,25 @@ function App() {
   };
 
   return (
-    <div className="App">
-      <h1>Weather Forecast</h1>
-      <button onClick={fetchWeather} disabled={loading}>
-        {loading ? 'Loading...' : 'Update Forecast'}
-      </button>
+    <Container maxWidth="md" sx={{ mt: 6 }}>
+      <Typography variant="h3" align="center" gutterBottom>
+        Weather Forecast
+      </Typography>
+
+      <Box display="flex" justifyContent="center" mb={4}>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={fetchWeather}
+          disabled={loading}
+          startIcon={loading ? <CircularProgress size={20} color="inherit" /> : null}
+        >
+          {loading ? 'Loading...' : 'Update Forecast'}
+        </Button>
+      </Box>
+
       <Weather forecasts={weather} />
-    </div>
+    </Container>
   );
 }
 
