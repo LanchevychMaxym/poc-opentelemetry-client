@@ -1,24 +1,34 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState } from 'react';
 import './App.css';
+import Weather from './Weather';
+import { WeatherForecast } from './types';
 
 function App() {
+  const [weather, setWeather] = useState<WeatherForecast[]>([]);
+  const [loading, setLoading] = useState(false);
+
+  const fetchWeather = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch('/weatherforecast');
+      if (!response.ok) throw new Error('Failed to fetch data');
+      const data: WeatherForecast[] = await response.json();
+      setWeather(data);
+    } catch (error) {
+      console.error(error);
+      alert('Error fetching weather data');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Weather Forecast</h1>
+      <button onClick={fetchWeather} disabled={loading}>
+        {loading ? 'Loading...' : 'Update Forecast'}
+      </button>
+      <Weather forecasts={weather} />
     </div>
   );
 }
